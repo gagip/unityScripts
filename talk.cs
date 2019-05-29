@@ -8,21 +8,25 @@ public class Dialogue
 {
     [TextArea] // 한 줄말고 여러줄로 쓸 수 있게
     public string dialogue;
-    public Sprite cg;
-    
+    public int characterNum;
 }
 
 public class talk : MonoBehaviour
 {
+
     [SerializeField] private SpriteRenderer sprite_StandingCG;
     [SerializeField] private SpriteRenderer sprite_DialogueBox;
     [SerializeField] private Text txt_Dialogue;
+    [SerializeField] private Sprite merry;
+    [SerializeField] private Sprite ddd;
+
 
     private bool isDialogue = false;
-
     private int count = 0;
 
     [SerializeField] private Dialogue[] dialogue;
+
+
 
     public void OnOff(bool _flag)
     {
@@ -43,13 +47,19 @@ public class talk : MonoBehaviour
     {
         OnOff(false);
         isDialogue = false;
-
     }
 
     private void NextDialogue()
     {
         txt_Dialogue.text = dialogue[count].dialogue;
-        sprite_StandingCG.sprite = dialogue[count].cg;
+        if(dialogue[count].characterNum == 1)
+        {
+            sprite_StandingCG.sprite = merry;
+        }
+        else if(dialogue[count].characterNum == 2)
+        {
+            sprite_StandingCG.sprite = ddd;
+        }
         count++;
     }
     
@@ -59,9 +69,11 @@ public class talk : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                
                 if (count < dialogue.Length)
                 {
                     NextDialogue();
+
                 }
                 else
                     HideDialogue();
